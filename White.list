@@ -1,0 +1,10 @@
+# > WhiteDomain
+DOMAIN-SUFFIX,fzhusheng.cn
+DOMAIN-SUFFIX,fzhusheng.com
+DOMAIN-SUFFIX,cn.bing.com
+DOMAIN-SUFFIX,bing.com
+
+# > WhiteIP
+IP-CIDR,183.251.7.0/24,no-resolve
+IP-CIDR,45.139.179.133/32,no-resolve
+IP-CIDR6,2a00:b700:4::2:2fd/128,no-resolve
