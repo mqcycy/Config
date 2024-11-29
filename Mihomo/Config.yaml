@@ -123,9 +123,7 @@ dns:
 # 机场列表
 p: &p {type: http, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 120, timeout: 2000, lazy: true}, exclude-filter: "(?i)回国|安徽|北京|重庆|福建|甘肃|广东|广西|贵州|海南|河北|黑龙江|河南|湖北|湖南|吉林|江苏|江西|辽宁|内蒙古|宁夏|青海|山东|山西|陕西|上海|四川|天津|西藏|新疆|云南|浙江"}
 proxy-providers: # 🏠 ⏳
-  🏠自建节点: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/7fe7de2e-a74e-44a8-b19a-36a5c027f00e?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
-  🚀神秘节点: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/747483f7-ee05-4417-b4da-53543cac9c77?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
-  ✈️聚合订阅: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/collection/ae4b5614-a92c-40bd-8e68-fee6e87f50c8?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
+  ✈️聚合订阅: {interval: 86400, url: "https://raw.githubusercontent.com/barry-far/V2ray-Configs/refs/heads/main/Splitted-By-Protocol/ss.txt", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
 
 # 节点
 proxies: 
@@ -134,10 +132,10 @@ proxies:
   - { name: "⭕ DNS劫持", type: dns, hidden: true}
 
 # 代理组 
-pr: &pr {type: select, proxies: [♻️ 自动故转,🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🔷 港台节点,🇷🇺 俄罗斯节点,🔔 其他地区,🇷🇺 RU自建,🇸🇬 SG自建,🟢 直连]}
+pr: &pr {type: select, proxies: [♻️ 自动故转,🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🔷 港台节点,🇷🇺 俄罗斯节点,🔔 其他地区,🟢 直连]}
 url-test: &url-test {type: url-test, interval: 40, tolerance: 70}
 proxy-groups:  
-  - {name: ♻️ 自动故转, type: fallback, proxies: [🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🇷🇺 俄罗斯节点,🔔 其他地区,🇷🇺 RU自建,🇸🇬 SG自建], lazy: true, interval: 20, timeout: 2000, max-failed-times: 2, url: "https://www.gstatic.com/generate_204"} 
+  - {name: ♻️ 自动故转, type: fallback, proxies: [🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🇷🇺 俄罗斯节点,🔔 其他地区], lazy: true, interval: 20, timeout: 2000, max-failed-times: 2, url: "https://www.gstatic.com/generate_204"} 
   - {name: 📺 视频媒体, <<: *pr}
   - {name: 👽 OpenAI, <<: *pr}
   - {name: Ⓜ️ MicorSoft, <<: *pr}
@@ -152,14 +150,12 @@ proxy-groups:
   - {name: 🐟 漏网之鱼, <<: *pr}
   - {name: 📢 广告过滤, type: select, proxies: [⛔ 拦截,🚫 丢弃,⚪ 绕过]}
 # 地区分组
-  - {name: 🇧 BPB节点, <<: *url-test, use: [✈️聚合订阅], filter: "(?i)^(?=.*(BPB))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
+  - {name: 🇧 BPB节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(BPB))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
   - {name: 🇺🇲 美国节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(美|US|States|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥))((?!(BPB|自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
   - {name: 🔶 新日韩节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(坡|SG|Singapore|狮城|日|JP|Japan|韩|KR|Korea))^((?!(自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
   - {name: 🔷 港台节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(港|HK|Hong|台|TW|Taiwan))((?!(US|自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
   - {name: 🇷🇺 俄罗斯节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(俄|RU|Russian))((?!(自建|直连|DIRECT|拦截|REJECT|DNS劫持|扫码|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
   - {name: 🔔 其他地区, <<: *url-test, include-all: true, filter: "(?i)^(?!.*(?:美|US|States|港|HK|Hong|台|TW|Taiwan|坡|SG|Singapore|狮城|日|JP|Japan|韩|KR|Korea|俄|RU|Russian|自建|直连|DIRECT|拦截|REJECT|DNS劫持)).*$"}
-  - {name: 🇷🇺 RU自建, <<: *url-test, use: [🏠自建节点], filter: "(?i)^(?=.*(自建))(?=.*(RU))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
-  - {name: 🇸🇬 SG自建, <<: *url-test, use: [🏠自建节点], filter: "(?i)^(?=.*(自建))(?=.*(SG))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
 # 特殊节点  
   - {name: 🚫 丢弃, type: select, proxies: [REJECT-DROP], hidden: true}
   - {name: ⚪ 绕过, type: select, proxies: [PASS], hidden: true}
@@ -215,9 +211,9 @@ rule-anchor:
   classic: &classic {behavior: classical, type: http, interval: 86400, format: text}
   yaml: &yaml {behavior: domain, type: http, interval: 86400, format: yaml}
 rule-providers: 
-  封锁列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Block.list" }
-  直连列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Direct.list" }
-  代理列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Proxy.list" }
+  封锁列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list" }
+  直连列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list" }
+  代理列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list" }
   GFW列表: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
  # 广告过滤
   BanAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list" }
@@ -247,25 +243,3 @@ rule-providers:
   Github: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.list" }
  # SpeedTest
   SpeedTest: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
-
-# 互联网入站, 自签证书路径/etc/mihomo/run/
-listeners: 
-  # 通用接入点
-  - {name: Http-IN-7890, type: http, port: 7890, listen: 0.0.0.0}
-#  - {name: Hy2-IN-62525, type: hysteria2, port: 62525, listen: 0.0.0.0, users: {Hy2-IN-62525: 27475f118ff38243c91982b35b96f8d7}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"} 
-#  - {name: SS-IN-62526, type: shadowsocks, port: 62526, listen: 0.0.0.0, password: shadowsocks, cipher: aes-256-gcm}
-  # Hy2地区接入点
-  - {name: Hy2-IN-62530, type: hysteria2, port: 62530, listen: 0.0.0.0, users: {Hy2-IN-62530: dda4b873b7c539f27be0e1da038bd2e7}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  - {name: Hy2-IN-62531, type: hysteria2, port: 62531, listen: 0.0.0.0, proxy: 🇺🇲 美国节点, users: {Hy2-IN-62531: e09f404cef96950e5c9c9af649745da5}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  - {name: Hy2-IN-62532, type: hysteria2, port: 62532, listen: 0.0.0.0, proxy: 🔶 新日韩节点, users: {Hy2-IN-62532: 6d3876f81da66a02c53b7c8d6c108ab1}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  - {name: Hy2-IN-62533, type: hysteria2, port: 62533, listen: 0.0.0.0, proxy: 🔷 港台节点, users: {Hy2-IN-62533: 39063432367159da5c975d058b48364e}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  - {name: Hy2-IN-62534, type: hysteria2, port: 62534, listen: 0.0.0.0, proxy: 🇷🇺 俄罗斯节点, users: {Hy2-IN-62534: 56977743e1f82ee16d574674f681453e}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  - {name: Hy2-IN-62535, type: hysteria2, port: 62535, listen: 0.0.0.0, proxy: 🔔 其他地区, users: {Hy2-IN-62535: 434bc4440b0b0cfd437615cb85f6b7ca}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
-  # SS地区接入点
-  - {name: SS-IN-62540, type: shadowsocks, port: 62540, listen: 0.0.0.0, password: e2bad666068d038fcfbc667c71a3d36b, cipher: aes-256-gcm}
-  - {name: SS-IN-62541, type: shadowsocks, port: 62541, listen: 0.0.0.0, proxy: 🇺🇲 美国节点, password: 439b90172bd1fb90a5a3a7b435af3195, cipher: aes-256-gcm}
-  - {name: SS-IN-62542, type: shadowsocks, port: 62542, listen: 0.0.0.0, proxy: 🔶 新日韩节点, password: ed1a26d855bdb8a57e1209897f9ee994, cipher: aes-256-gcm}
-  - {name: SS-IN-62543, type: shadowsocks, port: 62543, listen: 0.0.0.0, proxy: 🔷 港台节点, password: ba359b4a3a9c0e1673254cd4b5d36847, cipher: aes-256-gcm}
-  - {name: SS-IN-62544, type: shadowsocks, port: 62544, listen: 0.0.0.0, proxy: 🇷🇺 俄罗斯节点, password: 3fcccdc6bc78b875c8bbf94c7d106dc1, cipher: aes-256-gcm}
-  - {name: SS-IN-62545, type: shadowsocks, port: 62545, listen: 0.0.0.0, proxy: 🔔 其他地区, password: c702ca81e0154b8f468fa8f9a92a3d95, cipher: aes-256-gcm}
-  #
