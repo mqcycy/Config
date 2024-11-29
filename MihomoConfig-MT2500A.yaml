@@ -1,0 +1,271 @@
+# 全局配置
+mode: rule                                            # 运行模式rule/global/direct,分流/全局/直连
+log-level: info                                       # 日志级别silent/error/warning/info/debug
+port: 2080                                            # http(s) 代理端口
+socks-port: 2081                                      # socks4/4a/5 代理端口
+mixed-port: 2082                                      # 混合端口 同时支持 HTTP(S) 和 SOCKS5 协议
+redir-port: 2083                                      # redirect 透明代理端口,仅能代理 TCP 流量
+tproxy-port: 2084                                     # tproxy 透明代理端口,可代理 TCP 与 UDP 流量
+allow-lan: true                                       # 允许局域网连接 false / true
+ipv6: true                                            # IPv6 是否允许内核接受 IPv6 流量
+tcp-concurrent: false                                 # TCP 并发,如果域名解析结果对应多个IP,并发请求所有IP,选择握手最快的IP进行通讯
+disable-keep-alive: false                             # 禁用 TCP Keep Alive, 在 Android 默认为 true
+keep-alive-interval: 15                               # TCP Keep Alive包的间隔,减少移动设备耗电问题,默认15秒
+keep-alive-idle: 300                                  # TCP Keep Alive空闲超时,默认3600秒
+unified-delay: true                                   # 统一延迟
+find-process-mode: strict                             # 进程模式off/strict/always
+
+# GEOIP地址库配置
+geodata-mode: true                                    # GEOIP数据模式,更改geoip使用文件,mmdb或者dat,可选,true为dat
+geodata-loader: standard                              # GEO 文件加载模式 standard / memconservative 标准 / 小内存(默认值)
+geo-auto-update: true                                 # 自动更新 GEO 是否启用,可选 true/false 
+geo-update-interval: 48                               # 更新间隔,单位小时
+
+# 自定义GEO下载地址 https://github.com/Loyalsoldier/geoip/release
+#geox-url:
+#  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+#  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+#  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+#  asn: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb"
+
+# 指定UA
+global-client-fingerprint: chrome                     # 全局客户端指纹
+global-ua: "clash.meta"                               # 全局UA,可选"Mozilla/5.0; AppleWebKit/537.36; Chrome/91.0.4472.114; Safari/537.36; Shadowrocket/1.9.7; meta/1.0.0; Sing/1.1.0"
+
+# API面板配置
+external-controller: 0.0.0.0:9090                     # API 监听地址
+#external-controller-tls: 0.0.0.0:9443                # HTTPS-API监听地址,需要配置TLS部分证书和其私钥配置,使用TLS也必须填写external-controller
+# tls:                                                # TLS 目前仅用于 API 的 https
+  # certificate: "./tls/cert.pem"                     # 证书 PEM 格式,或者 证书的路径
+  # private-key: "./tls/key.pem"                      # 证书对应的私钥 PEM 格式,或者私钥路径
+  # custom-certifactes:
+    # - "./tls/Mozilla.pem"
+external-ui: "./ui"                                   # 外部面板路径
+external-ui-name: "1"                                 # 外部面板名称/子路径
+external-ui-url: "https://ghp.ci/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+secret: "888016"                                      # API 的访问密钥
+
+# 策略缓存和fakeip缓存
+profile:
+  store-selected: true                                # 储存API对策略组的选择,以供下次启动时使用
+  store-fake-ip: true                                 # fake-ip缓存,域名再次发生连接时,使用原有映射地址
+
+# 流量嗅探
+sniffer:
+  enable: true                                        # 是否启用,可选 true/false
+  force-dns-mapping: true                             # 对 redir-host 类型识别的流量进行强制嗅探
+  parse-pure-ip: true                                 # 对所有未获取到域名的流量进行强制嗅探
+  override-destination: true                          # 是否使用嗅探结果作为实际访问,默认为 true
+  sniff:
+    QUIC:
+      ports: [443, 8443]
+    TLS:                                              # TLS 端口配置, 如果不配置 ports 默认嗅探 443
+      ports: [443, 8443]
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true                      # 可覆盖全局override-destination
+  force-domain:
+    - "+.v2ex.com"
+  skip-domain:                                        # 需要跳过嗅探的域名,主要解决部分站点sni字段非域名,导致嗅探结果异常的问题,如米家设备
+    - "geosite:cn"
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.push.apple.com"
+    - "+.apple.com"
+
+# TUN 代理模式配置
+tun:
+  enable: true                                        # 是否启用,可选 true/false
+  stack: system                                       # Tun 模式堆栈 system/gvisor/mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-detect-interface: true                         # 自动识别出口网卡
+  auto-route: true                                    # 配置路由表
+  auto-redirect: true                                 # 自动配置 iptables 以重定向 TCP 连接
+  route-address:                                      # 启用 auto-route 时使用自定义路由而不是默认路由
+    - 0.0.0.0/1
+    - 128.0.0.0/1
+    - "::/1"
+    - "8000::/1"
+
+# DNS模块
+dns:
+  cache-algorithm: arc                                # 缓存算法lru/lfu/arc,一般不设置使用默认arc
+  enable: true                                        # 关闭将使用系统 DNS
+  prefer-h3: true                                     # 是否开启 DoH 支持 HTTP/3，将并发尝试
+  listen: 0.0.0.0:2053                                # 开启 DNS 服务器监听
+  ipv6: true                                          # false将返回AAAA的空结果
+  enhanced-mode: redir-host                           # DNS 模式: redir-host / fake-ip
+  fake-ip-range: 28.0.0.0/8                           # fakeip 下的 IP 段设置 198.18.0.0/16 28.0.0.1/8
+  fake-ip-filter-mode: blacklist                      # fake-ip匹配模式,默认为blacklist,即如果匹配成功不返回fake-ip,可设置为whitelist，即只有匹配成功才返回fake-ip
+  fake-ip-filter:                                     # fakeip 过滤,以下地址不会下发 fakeip 映射用于连接
+    - "+.lan"
+    - "+.invalid.*"
+    - "+.local.*"
+    - "+.localhost"
+    - "+.fzhusheng.*"
+    - "+.u160765.us.kg"
+    - "geosite:private,cn"
+  default-nameserver:                                 # 只用于解析 nameserver 中域名格式的 DNS 服务器,可使用 UDP/DoT/DoH,只能使用纯 IP 地址
+    - "tls://223.5.5.5:853"                           # 阿里DoT
+    - "https://120.53.53.53:443/dns-query"            # 腾讯DoH
+  nameserver:                                         # 除 nameserver-policy 指定规则外的所有域名都由 nameserver 解析
+#    - "192.168.15.201"                                # 本地DNS
+    - "tls://dns.google:853"                          # GoogleDNS
+    - "https://cloudflare-dns.com:443/dns-query"      # CloudflareDNS
+    - "https://doh.opendns.com:443/dns-query"         # OpenDNS
+  nameserver-policy:
+    "geosite: cn,private":                            # 国内网址
+      - "tls://dns.alidns.com:853"                    # 阿里DoT
+      - "https://120.53.53.53:443/dns-query"          # 腾讯DoH
+
+# 机场列表
+p: &p {type: http, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 120, timeout: 2000, lazy: true}, exclude-filter: "(?i)回国|安徽|北京|重庆|福建|甘肃|广东|广西|贵州|海南|河北|黑龙江|河南|湖北|湖南|吉林|江苏|江西|辽宁|内蒙古|宁夏|青海|山东|山西|陕西|上海|四川|天津|西藏|新疆|云南|浙江"}
+proxy-providers: # 🏠 ⏳
+  🏠自建节点: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/7fe7de2e-a74e-44a8-b19a-36a5c027f00e?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
+  🚀神秘节点: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/747483f7-ee05-4417-b4da-53543cac9c77?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
+  ✈️聚合订阅: {interval: 86400, url: "https://mq.fzhusheng.cn:831/b532d0707ad2fc341d43/download/collection/ae4b5614-a92c-40bd-8e68-fee6e87f50c8?target=V2Ray", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
+
+# 节点
+proxies: 
+  - { name: "🟢 直连", type: direct, udp: true, hidden: true}
+  - { name: "⛔ 拦截", type: reject, hidden: true}
+  - { name: "⭕ DNS劫持", type: dns, hidden: true}
+
+# 代理组 
+pr: &pr {type: select, proxies: [♻️ 自动故转,🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🔷 港台节点,🇷🇺 俄罗斯节点,🔔 其他地区,🇷🇺 RU自建,🇸🇬 SG自建,🟢 直连]}
+url-test: &url-test {type: url-test, interval: 40, tolerance: 70}
+proxy-groups:  
+  - {name: ♻️ 自动故转, type: fallback, proxies: [🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🇷🇺 俄罗斯节点,🔔 其他地区,🇷🇺 RU自建,🇸🇬 SG自建], lazy: true, interval: 20, timeout: 2000, max-failed-times: 2, url: "https://www.gstatic.com/generate_204"} 
+  - {name: 📺 视频媒体, <<: *pr}
+  - {name: 👽 OpenAI, <<: *pr}
+  - {name: Ⓜ️ MicorSoft, <<: *pr}
+  - {name: 🇬 Google, <<: *pr}
+  - {name: 🍎 Apple, <<: *pr}
+  - {name: 💳 PayPal, <<: *pr}
+  - {name: 📝 GitHub, <<: *pr}
+  - {name: 🇵 PornHub, <<: *pr}
+  - {name: 📲 Telegram, <<: *pr}
+  - {name: 🚀 SpeedTest, <<: *pr}
+  - {name: 💠 出国代理, <<: *pr}
+  - {name: 🐟 漏网之鱼, <<: *pr}
+  - {name: 📢 广告过滤, type: select, proxies: [⛔ 拦截,🚫 丢弃,⚪ 绕过]}
+# 地区分组
+  - {name: 🇧 BPB节点, <<: *url-test, use: [✈️聚合订阅], filter: "(?i)^(?=.*(BPB))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
+  - {name: 🇺🇲 美国节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(美|US|States|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥))((?!(BPB|自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
+  - {name: 🔶 新日韩节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(坡|SG|Singapore|狮城|日|JP|Japan|韩|KR|Korea))^((?!(自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
+  - {name: 🔷 港台节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(港|HK|Hong|台|TW|Taiwan))((?!(US|自建|直连|DIRECT|拦截|REJECT|DNS劫持|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
+  - {name: 🇷🇺 俄罗斯节点, <<: *url-test, include-all: true, filter: "(?i)^(?=.*(俄|RU|Russian))((?!(自建|直连|DIRECT|拦截|REJECT|DNS劫持|扫码|中转|家宽|游戏|剩余|流量|0.5|0.5倍|0.5x|2.0|2倍|2x|3.0|3倍|3x|4.0|4倍|4x|5.0|5倍|5x)).)*$"}
+  - {name: 🔔 其他地区, <<: *url-test, include-all: true, filter: "(?i)^(?!.*(?:美|US|States|港|HK|Hong|台|TW|Taiwan|坡|SG|Singapore|狮城|日|JP|Japan|韩|KR|Korea|俄|RU|Russian|自建|直连|DIRECT|拦截|REJECT|DNS劫持)).*$"}
+  - {name: 🇷🇺 RU自建, <<: *url-test, use: [🏠自建节点], filter: "(?i)^(?=.*(自建))(?=.*(RU))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
+  - {name: 🇸🇬 SG自建, <<: *url-test, use: [🏠自建节点], filter: "(?i)^(?=.*(自建))(?=.*(SG))((?!(直连|DIRECT|拦截|REJECT|DNS劫持|公益|扫码)).)*$"}
+# 特殊节点  
+  - {name: 🚫 丢弃, type: select, proxies: [REJECT-DROP], hidden: true}
+  - {name: ⚪ 绕过, type: select, proxies: [PASS], hidden: true}
+
+# 分流规则
+rules:    
+#  - AND,((NETWORK,tcp),(DST-PORT,53)),⭕ DNS劫持
+#  - AND,((NETWORK,udp),(DST-PORT,53)),⭕ DNS劫持
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOSITE,cn))),⛔ 拦截          # 除中国外的 QUIC
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),⛔ 拦截            # 除中国外的 QUIC
+  - IP-CIDR,127.0.0.1/32,⛔ 拦截,no-resolve                                      # 修复 DNS 泄漏
+  - IP-CIDR6,::1/128,⛔ 拦截,no-resolve
+  - IP-CIDR,198.18.0.1/16,⛔ 拦截,no-resolve
+  - IP-CIDR,28.0.0.1/8,⛔ 拦截,no-resolve
+  - RULE-SET,封锁列表,⛔ 拦截
+  - GEOSITE,private,🟢 直连
+  - GEOIP,private,🟢 直连,no-resolve
+ # 广告过滤
+  - GEOSITE,category-ads-all,📢 广告过滤
+  - RULE-SET,BanAD,📢 广告过滤
+  - RULE-SET,BanProgramAD,📢 广告过滤
+  - RULE-SET,BanEasyListChina,📢 广告过滤
+  - RULE-SET,AWAvenue-Ads,📢 广告过滤
+  - RULE-SET,直连列表,🟢 直连
+  - RULE-SET,代理列表,💠 出国代理
+ # 分类规则 
+  - RULE-SET,OpenAI,👽 OpenAI
+  - RULE-SET,Github,📝 GitHub
+  - RULE-SET,Telegram,📲 Telegram
+  - RULE-SET,Youtube,📺 视频媒体
+  - RULE-SET,Netflix,📺 视频媒体
+  - RULE-SET,TikTok,📺 视频媒体
+  - RULE-SET,PornHub,🇵 PornHub
+  - RULE-SET,BiliBili,🟢 直连
+  - RULE-SET,Micorsoft,Ⓜ️ MicorSoft
+  - RULE-SET,Apple,🍎 Apple
+  - RULE-SET,PayPal,💳 PayPal
+  - RULE-SET,Google,🇬 Google
+  - RULE-SET,SpeedTest,🚀 SpeedTest
+ # 兜底规则
+  - GEOSITE,geolocation-!cn,💠 出国代理
+  - GEOSITE,category-scholar-!cn,💠 出国代理
+  - RULE-SET,GFW列表,💠 出国代理
+  - GEOSITE,category-games@cn,🟢 直连
+  - GEOIP,CN,🟢 直连,no-resolve
+  - GEOSITE,cn,🟢 直连
+  - MATCH,🐟 漏网之鱼
+
+# 订阅规则集
+rule-anchor:
+  ip: &ip {behavior: ipcidr, type: http, interval: 86400, format: mrs}
+  domain: &domain {behavior: domain, type: http, interval: 86400, format: mrs}
+  classic: &classic {behavior: classical, type: http, interval: 86400, format: text}
+  yaml: &yaml {behavior: domain, type: http, interval: 86400, format: yaml}
+rule-providers: 
+  封锁列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Block.list" }
+  直连列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Direct.list" }
+  代理列表: { <<: *classic, url: "https://mq.fzhusheng.cn:830/fzhusheng/Config/raw/branch/main/rules-dat/Proxy.list" }
+  GFW列表: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
+ # 广告过滤
+  BanAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list" }
+  BanProgramAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list" }
+  BanEasyListChina: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyListChina.list" }
+ # 秋风广告拦截规则 https://awavenue.top
+  AWAvenue-Ads: { <<: *yaml, url: "https://ghp.ci/https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/refs/heads/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
+ # OpenAI
+  OpenAI: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.list" }
+ # 流媒体
+  Youtube: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.list" }
+  Netflix: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix.list" }
+  TikTok: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.list" }
+  BiliBili: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BiliBili/BiliBili.list" }
+  PornHub: { <<: *domain, url: "https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-porn.mrs" }
+ # 电报消息
+  Telegram: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.list" }
+ # 微软服务
+  Micorsoft: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.list" }
+ # 谷歌服务
+  Google: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.list" }
+ # PayPal
+  PayPal: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+ # Apple
+  Apple: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple.list" }
+ # GitHub
+  Github: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.list" }
+ # SpeedTest
+  SpeedTest: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
+
+# 互联网入站, 自签证书路径/etc/mihomo/run/
+listeners: 
+  # 通用接入点
+  - {name: Http-IN-7890, type: http, port: 7890, listen: 0.0.0.0}
+#  - {name: Hy2-IN-62525, type: hysteria2, port: 62525, listen: 0.0.0.0, users: {Hy2-IN-62525: 27475f118ff38243c91982b35b96f8d7}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"} 
+#  - {name: SS-IN-62526, type: shadowsocks, port: 62526, listen: 0.0.0.0, password: shadowsocks, cipher: aes-256-gcm}
+  # Hy2地区接入点
+  - {name: Hy2-IN-62530, type: hysteria2, port: 62530, listen: 0.0.0.0, users: {Hy2-IN-62530: dda4b873b7c539f27be0e1da038bd2e7}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  - {name: Hy2-IN-62531, type: hysteria2, port: 62531, listen: 0.0.0.0, proxy: 🇺🇲 美国节点, users: {Hy2-IN-62531: e09f404cef96950e5c9c9af649745da5}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  - {name: Hy2-IN-62532, type: hysteria2, port: 62532, listen: 0.0.0.0, proxy: 🔶 新日韩节点, users: {Hy2-IN-62532: 6d3876f81da66a02c53b7c8d6c108ab1}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  - {name: Hy2-IN-62533, type: hysteria2, port: 62533, listen: 0.0.0.0, proxy: 🔷 港台节点, users: {Hy2-IN-62533: 39063432367159da5c975d058b48364e}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  - {name: Hy2-IN-62534, type: hysteria2, port: 62534, listen: 0.0.0.0, proxy: 🇷🇺 俄罗斯节点, users: {Hy2-IN-62534: 56977743e1f82ee16d574674f681453e}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  - {name: Hy2-IN-62535, type: hysteria2, port: 62535, listen: 0.0.0.0, proxy: 🔔 其他地区, users: {Hy2-IN-62535: 434bc4440b0b0cfd437615cb85f6b7ca}, up: 100, down: 100, alpn: ['h3'], certificate: "./certs/u160765.us.kg/fullchain.cer", private-key: "./certs/u160765.us.kg/u160765.us.kg.key"}            
+  # SS地区接入点
+  - {name: SS-IN-62540, type: shadowsocks, port: 62540, listen: 0.0.0.0, password: e2bad666068d038fcfbc667c71a3d36b, cipher: aes-256-gcm}
+  - {name: SS-IN-62541, type: shadowsocks, port: 62541, listen: 0.0.0.0, proxy: 🇺🇲 美国节点, password: 439b90172bd1fb90a5a3a7b435af3195, cipher: aes-256-gcm}
+  - {name: SS-IN-62542, type: shadowsocks, port: 62542, listen: 0.0.0.0, proxy: 🔶 新日韩节点, password: ed1a26d855bdb8a57e1209897f9ee994, cipher: aes-256-gcm}
+  - {name: SS-IN-62543, type: shadowsocks, port: 62543, listen: 0.0.0.0, proxy: 🔷 港台节点, password: ba359b4a3a9c0e1673254cd4b5d36847, cipher: aes-256-gcm}
+  - {name: SS-IN-62544, type: shadowsocks, port: 62544, listen: 0.0.0.0, proxy: 🇷🇺 俄罗斯节点, password: 3fcccdc6bc78b875c8bbf94c7d106dc1, cipher: aes-256-gcm}
+  - {name: SS-IN-62545, type: shadowsocks, port: 62545, listen: 0.0.0.0, proxy: 🔔 其他地区, password: c702ca81e0154b8f468fa8f9a92a3d95, cipher: aes-256-gcm}
+  #
