@@ -1,0 +1,104 @@
+# My Direct List
+
+# 直连补充列表(防止走代理)
+
+# 后缀匹配
+DOMAIN-SUFFIX,time.windows.com
+DOMAIN-SUFFIX,lanzov.com
+DOMAIN-SUFFIX,hao123.com
+DOMAIN-SUFFIX,fzhusheng.cn
+DOMAIN-SUFFIX,fzhusheng.com
+DOMAIN-SUFFIX,u160765.buzz
+DOMAIN-SUFFIX,zhibodizhi.top
+DOMAIN-SUFFIX,notion.site
+DOMAIN-SUFFIX,hiti.com
+#DOMAIN-SUFFIX,openwrt.ai
+DOMAIN-SUFFIX,vmware.com
+
+
+# 放行NTP服务
+DOMAIN-SUFFIX,time.*.*
+DOMAIN-SUFFIX,ntp.*.*
+DOMAIN-SUFFIX,*.ntp.org.cn
+DOMAIN-SUFFIX,pool.ntp.org
+
+# STUN
+DOMAIN-SUFFIX,stun.*.*
+DOMAIN-SUFFIX,stun.*.*.*
+DOMAIN-SUFFIX,stun.*.*
+DOMAIN-SUFFIX,stun.*.*.*
+DOMAIN-SUFFIX,stun.*.*.*.*
+DOMAIN-SUFFIX,stun.*.*.*.*.*
+
+# Microsoft Windows Serivice
+DOMAIN-SUFFIX,msftncsi.com
+DOMAIN-SUFFIX,msftconnecttest.com
+DOMAIN-SUFFIX,microsoftonline.com
+DOMAIN-SUFFIX,time.windows.com
+DOMAIN-SUFFIX,msftncsi.com
+DOMAIN-SUFFIX,steamcontent.com
+
+
+# 域名关键字匹配
+DOMAIN-KEYWORD,baidu
+
+# 本地公网IP
+IP-CIDR,183.251.7.0/24,no-resolve
+
+# RU VPS
+IP-CIDR,46.29.162.28/32,no-resolve
+IP-CIDR6,2a00:b700:2::3c2/64,no-resolve
+
+# SG VPS
+IP-CIDR,192.124.176.71/32,no-resolve
+IP-CIDR6,2605:e440:16::3cd/64,no-resolve
+
+# FinalShell
+IP-CIDR,5.5.5.5/32,no-resolve
+
+# 国内DNS
+DOMAIN-SUFFIX,dns.alidns.com
+DOMAIN-SUFFIX,doh.pub
+IP-CIDR,219.146.1.66/32,no-resolve
+IP-CIDR,219.147.1.66/32,no-resolve
+IP-CIDR,119.29.29.29/32,no-resolve
+IP-CIDR,223.5.5.5/32,no-resolve
+IP-CIDR,223.6.6.6/32,no-resolve
+IP-CIDR,180.76.76.76/32,no-resolve
+IP-CIDR,114.114.114.114/32,no-resolve
+IP-CIDR,114.114.115.115/32,no-resolve
+
+# Github加速地址
+DOMAIN-SUFFIX,mirror.ghproxy.com
+
+# Windows 网络连接探测
+DOMAIN-SUFFIX,msftconnecttest.com
+DOMAIN-SUFFIX,msftncsi.com
+
+# 支付宝小程序
+DOMAIN-SUFFIX,95504test.com
+
+# 群辉服务
+DOMAIN-SUFFIX,synology.com
+DOMAIN-SUFFIX,synoforum.com
+DOMAIN-SUFFIX,synologydownload.com
+DOMAIN-SUFFIX,synologyupdate.com
+
+# Radxa开发板
+DOMAIN-SUFFIX,radxa.com
+
+# 向日葵远程
+DOMAIN-SUFFIX,sl-tk.oray.com
+DOMAIN-SUFFIX,oray.com
+DOMAIN-SUFFIX,oray.net
+DOMAIN-KEYWORD,oray
+
+# 阿里云
+DOMAIN-SUFFIX,aliyuncs.com
+DOMAIN-KEYWORD,aliyun
+
+# 测速/IP检测等
+DOMAIN-SUFFIX,iplark.com
+DOMAIN-SUFFIX,speed.fj.chinamobile.com
+DOMAIN-SUFFIX,cn.pool.ntp.org
+
