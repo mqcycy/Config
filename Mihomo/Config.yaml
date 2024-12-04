@@ -104,14 +104,11 @@ dns:
     - "+.invalid.*"
     - "+.local.*"
     - "+.localhost"
-    - "+.fzhusheng.*"
-    - "+.u160765.us.kg"
     - "geosite:private,cn"
   default-nameserver:                                 # 只用于解析 nameserver 中域名格式的 DNS 服务器,可使用 UDP/DoT/DoH,只能使用纯 IP 地址
     - "tls://223.5.5.5:853"                           # 阿里DoT
     - "https://120.53.53.53:443/dns-query"            # 腾讯DoH
   nameserver:                                         # 除 nameserver-policy 指定规则外的所有域名都由 nameserver 解析
-#    - "192.168.15.201"                                # 本地DNS
     - "tls://dns.google:853"                          # GoogleDNS
     - "https://cloudflare-dns.com:443/dns-query"      # CloudflareDNS
     - "https://doh.opendns.com:443/dns-query"         # OpenDNS
@@ -136,7 +133,8 @@ pr: &pr {type: select, proxies: [♻️ 自动故转,🇧 BPB节点,🇺🇲 美
 url-test: &url-test {type: url-test, interval: 40, tolerance: 70}
 proxy-groups:  
   - {name: ♻️ 自动故转, type: fallback, proxies: [🇧 BPB节点,🇺🇲 美国节点,🔶 新日韩节点,🇷🇺 俄罗斯节点,🔔 其他地区], lazy: true, interval: 20, timeout: 2000, max-failed-times: 2, url: "https://www.gstatic.com/generate_204"} 
-  - {name: 📺 视频媒体, <<: *pr}
+  - {name: 🎞️ 视频媒体, <<: *pr}
+  - {name: 🔒 TikTok, <<: *pr}
   - {name: 👽 OpenAI, <<: *pr}
   - {name: Ⓜ️ MicorSoft, <<: *pr}
   - {name: 🇬 Google, <<: *pr}
@@ -185,9 +183,9 @@ rules:
   - RULE-SET,OpenAI,👽 OpenAI
   - RULE-SET,Github,📝 GitHub
   - RULE-SET,Telegram,📲 Telegram
-  - RULE-SET,Youtube,📺 视频媒体
-  - RULE-SET,Netflix,📺 视频媒体
-  - RULE-SET,TikTok,📺 视频媒体
+  - RULE-SET,Youtube,🎞️ 视频媒体
+  - RULE-SET,Netflix,🎞️ 视频媒体
+  - RULE-SET,TikTok,🔒 TikTok
   - RULE-SET,PornHub,🇵 PornHub
   - RULE-SET,BiliBili,🟢 直连
   - RULE-SET,Micorsoft,Ⓜ️ MicorSoft
@@ -211,9 +209,9 @@ rule-anchor:
   classic: &classic {behavior: classical, type: http, interval: 86400, format: text}
   yaml: &yaml {behavior: domain, type: http, interval: 86400, format: yaml}
 rule-providers: 
-  封锁列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list" }
-  直连列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list" }
-  代理列表: { <<: *classic, url: "https://https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list" }
+  封锁列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list" }
+  直连列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list" }
+  代理列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list" }
   GFW列表: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
  # 广告过滤
   BanAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list" }
