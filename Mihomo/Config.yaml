@@ -42,7 +42,7 @@ external-controller: 0.0.0.0:9090                     # API 监听地址
     # - "./tls/Mozilla.pem"
 external-ui: "./ui"                                   # 外部面板路径
 external-ui-name: "1"                                 # 外部面板名称/子路径
-external-ui-url: "https://ghp.ci/https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
+external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
 secret: "888016"                                      # API 的访问密钥
 
 # 策略缓存和fakeip缓存
@@ -120,7 +120,7 @@ dns:
 # 机场列表
 p: &p {type: http, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 120, timeout: 2000, lazy: true}, exclude-filter: "(?i)回国|安徽|北京|重庆|福建|甘肃|广东|广西|贵州|海南|河北|黑龙江|河南|湖北|湖南|吉林|江苏|江西|辽宁|内蒙古|宁夏|青海|山东|山西|陕西|上海|四川|天津|西藏|新疆|云南|浙江"}
 proxy-providers: # 🏠 ⏳
-  ✈️聚合订阅: {interval: 86400, url: "https://ghp.ci/https://raw.githubusercontent.com/barry-far/V2ray-Configs/refs/heads/main/Splitted-By-Protocol/ss.txt", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
+  ✈️聚合订阅: {interval: 86400, url: "https://raw.githubusercontent.com/barry-far/V2ray-Configs/refs/heads/main/Splitted-By-Protocol/ss.txt", override: {skip-cert-verify: true, udp: true, ip-version: ipv6-prefer, additional-prefix: ""}, <<: *p}
 
 # 节点
 proxies: 
@@ -209,35 +209,35 @@ rule-anchor:
   classic: &classic {behavior: classical, type: http, interval: 86400, format: text}
   yaml: &yaml {behavior: domain, type: http, interval: 86400, format: yaml}
 rule-providers: 
-  封锁列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list" }
-  直连列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list" }
-  代理列表: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list" }
-  GFW列表: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
+  封锁列表: { <<: *classic, url: "https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list" }
+  直连列表: { <<: *classic, url: "https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list" }
+  代理列表: { <<: *classic, url: "https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list" }
+  GFW列表: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
  # 广告过滤
-  BanAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list" }
-  BanProgramAD: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list" }
-  BanEasyListChina: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyListChina.list" }
+  BanAD: { <<: *classic, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list" }
+  BanProgramAD: { <<: *classic, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list" }
+  BanEasyListChina: { <<: *classic, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyListChina.list" }
  # 秋风广告拦截规则 https://awavenue.top
-  AWAvenue-Ads: { <<: *yaml, url: "https://ghp.ci/https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/refs/heads/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
+  AWAvenue-Ads: { <<: *yaml, url: "https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/refs/heads/main/Filters/AWAvenue-Ads-Rule-Clash.yaml" }
  # OpenAI
-  OpenAI: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.list" }
+  OpenAI: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/OpenAI/OpenAI.list" }
  # 流媒体
-  Youtube: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.list" }
-  Netflix: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix.list" }
-  TikTok: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.list" }
-  BiliBili: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BiliBili/BiliBili.list" }
-  PornHub: { <<: *domain, url: "https://ghp.ci/https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-porn.mrs" }
+  Youtube: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/YouTube/YouTube.list" }
+  Netflix: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Netflix/Netflix.list" }
+  TikTok: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/TikTok/TikTok.list" }
+  BiliBili: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/BiliBili/BiliBili.list" }
+  PornHub: { <<: *domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-porn.mrs" }
  # 电报消息
-  Telegram: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.list" }
+  Telegram: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Telegram/Telegram.list" }
  # 微软服务
-  Micorsoft: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.list" }
+  Micorsoft: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Microsoft/Microsoft.list" }
  # 谷歌服务
-  Google: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.list" }
+  Google: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Google/Google.list" }
  # PayPal
-  PayPal: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+  PayPal: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
  # Apple
-  Apple: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple.list" }
+  Apple: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/Apple/Apple.list" }
  # GitHub
-  Github: { <<: *classic, url: "https://ghp.ci/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.list" }
+  Github: { <<: *classic, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Clash/GitHub/GitHub.list" }
  # SpeedTest
-  SpeedTest: { <<: *domain, url: "https://ghp.ci/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
+  SpeedTest: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
