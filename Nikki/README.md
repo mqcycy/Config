@@ -1,1 +1,1 @@
-# MihomoTPorxy 自用规则
+# Nikki Mihomo 自用规则
