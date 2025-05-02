@@ -1,49 +1,31 @@
 # 全局配置
-mode: rule                                            # 运行模式rule/global/direct,分流/全局/直连
-log-level: info                                       # 日志级别silent/error/warning/info/debug
-port: 2080                                            # http(s) 代理端口
-socks-port: 2081                                      # socks4/4a/5 代理端口
-mixed-port: 2082                                      # 混合端口 同时支持 HTTP(S) 和 SOCKS5 协议
-redir-port: 2083                                      # redirect 透明代理端口,仅能代理 TCP 流量
-tproxy-port: 2084                                     # tproxy 透明代理端口,可代理 TCP 与 UDP 流量
-allow-lan: true                                       # 允许局域网连接 false / true
-ipv6: true                                            # IPv6 是否允许内核接受 IPv6 流量
-tcp-concurrent: false                                 # TCP 并发,如果域名解析结果对应多个IP,并发请求所有IP,选择握手最快的IP进行通讯
 disable-keep-alive: false                             # 禁用 TCP Keep Alive, 在 Android 默认为 true
 keep-alive-interval: 15                               # TCP Keep Alive包的间隔,减少移动设备耗电问题,默认15秒
-keep-alive-idle: 300                                  # TCP Keep Alive空闲超时,默认3600秒
+keep-alive-idle: 300                                  # TCP Keep Alive空闲超时,默认600秒
 unified-delay: true                                   # 统一延迟
-find-process-mode: strict                             # 进程模式off/strict/always
+tcp-concurrent: false                                 # TCP 并发,如果域名解析结果对应多个IP,并发请求所有IP,选择握手最快的IP进行通讯
+find-process-mode: off                                # 进程匹配: always强制匹配 | strict自动匹配 | off不匹配进程(路由器推荐)
 
 # GEOIP地址库配置
 geodata-mode: true                                    # GEOIP数据模式,更改geoip使用文件,mmdb或者dat,可选,true为dat
-geodata-loader: standard                              # GEO 文件加载模式 standard / memconservative 标准 / 小内存(默认值)
+geodata-loader: standard                              # GEO 文件加载模式 standard 标准 | memconservative 小内存(默认值)
 geo-auto-update: true                                 # 自动更新 GEO 是否启用,可选 true/false 
-geo-update-interval: 48                               # 更新间隔,单位小时
-
-# 自定义GEO下载地址 https://github.com/Loyalsoldier/geoip/release
-#geox-url:
-#  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
-#  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
-#  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
-#  asn: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb"
+geo-update-interval: 72                               # 更新间隔,单位小时
+geox-url:                                             # 自定义GEO下载地址 https://github.com/Loyalsoldier/geoip/release
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+  asn: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/GeoLite2-ASN.mmdb"
 
 # 指定UA
 global-client-fingerprint: chrome                     # 全局客户端指纹
 global-ua: "clash.meta"                               # 全局UA,可选"Mozilla/5.0; AppleWebKit/537.36; Chrome/91.0.4472.114; Safari/537.36; Shadowrocket/1.9.7; meta/1.0.0; Sing/1.1.0"
 
 # API面板配置
-external-controller: 0.0.0.0:9090                     # API 监听地址
-#external-controller-tls: 0.0.0.0:9443                # HTTPS-API监听地址,需要配置TLS部分证书和其私钥配置,使用TLS也必须填写external-controller
-# tls:                                                # TLS 目前仅用于 API 的 https
-  # certificate: "./tls/cert.pem"                     # 证书 PEM 格式,或者 证书的路径
-  # private-key: "./tls/key.pem"                      # 证书对应的私钥 PEM 格式,或者私钥路径
-  # custom-certifactes:
-    # - "./tls/Mozilla.pem"
-external-ui: "./ui"                                   # 外部面板路径
-external-ui-name: "1"                                 # 外部面板名称/子路径
-external-ui-url: "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip"
-secret: "888016"                                      # API 的访问密钥
+#external-controller-tls: 0.0.0.0:9443                 # HTTPS-API监听地址,需要配置TLS部分证书和其私钥配置,使用TLS也必须填写external-controller
+#tls:                                                  # TLS 目前仅用于 API 的 https
+#  certificate: "./tls/api.crt"                        # 证书 PEM 格式,或者 证书的路径
+#  private-key: "./tls/api.key"                        # 证书对应的私钥 PEM 格式,或者私钥路径
 
 # 策略缓存和fakeip缓存
 profile:
@@ -53,69 +35,98 @@ profile:
 # 流量嗅探
 sniffer:
   enable: true                                        # 是否启用,可选 true/false
-  force-dns-mapping: true                             # 对 redir-host 类型识别的流量进行强制嗅探
+  force-dns-mapping: true                             # 对 Redir-host 类型识别的流量进行强制嗅探
   parse-pure-ip: true                                 # 对所有未获取到域名的流量进行强制嗅探
-  override-destination: true                          # 是否使用嗅探结果作为实际访问,默认为 true
+  override-destination: true                          # 是否使用嗅探结果作为实际访问，默认为 true
   sniff:
-    QUIC:
-      ports: [443, 8443]
-    TLS:                                              # TLS 端口配置, 如果不配置 ports 默认嗅探 443
-      ports: [443, 8443]
     HTTP:
       ports: [80, 8080-8880]
       override-destination: true                      # 可覆盖全局override-destination
+    TLS:                                              # TLS 端口配置, 如果不配置 ports 默认嗅探 443
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
   force-domain:
     - "+.v2ex.com"
   skip-domain:                                        # 需要跳过嗅探的域名,主要解决部分站点sni字段非域名,导致嗅探结果异常的问题,如米家设备
-    - "geosite:cn"
     - "Mijia Cloud"
     - "dlg.io.mi.com"
+    - "GEOSITE,CN"
     - "+.push.apple.com"
     - "+.apple.com"
-
-# TUN 代理模式配置
-tun:
-  enable: true                                        # 是否启用,可选 true/false
-  stack: system                                       # Tun 模式堆栈 system/gvisor/mixed
-  dns-hijack:
-    - "any:53"
-    - "tcp://any:53"
-  auto-detect-interface: true                         # 自动识别出口网卡
-  auto-route: true                                    # 配置路由表
-  auto-redirect: true                                 # 自动配置 iptables 以重定向 TCP 连接
-  route-address:                                      # 启用 auto-route 时使用自定义路由而不是默认路由
-    - 0.0.0.0/1
-    - 128.0.0.0/1
-    - "::/1"
-    - "8000::/1"
+    - "+.wechat.com"
+    - "+.qpic.cn"
+    - "+.qq.com"
+    - "+.wechatapp.com"
+    - "+.vivox.com"
+    - "+.oray.com"
+    - "+.sunlogin.net"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
 
 # DNS模块
 dns:
-  cache-algorithm: arc                                # 缓存算法lru/lfu/arc,一般不设置使用默认arc
   enable: true                                        # 关闭将使用系统 DNS
-  prefer-h3: true                                     # 是否开启 DoH 支持 HTTP/3，将并发尝试
-  listen: 0.0.0.0:2053                                # 开启 DNS 服务器监听
-  ipv6: true                                          # false将返回AAAA的空结果
   enhanced-mode: redir-host                           # DNS 模式: redir-host / fake-ip
   fake-ip-range: 28.0.0.0/8                           # fakeip 下的 IP 段设置 198.18.0.0/16 28.0.0.1/8
+  prefer-h3: false                                    # 是否开启 DoH 支持 HTTP/3，将并发尝试
+  respect-rules: true                                 # 遵循分流规则,DNS查询走相应代理
+  listen: 0.0.0.0:1053                                # 开启 DNS 服务器监听
+  ipv6: true                                          # false将返回AAAA的空结果
   fake-ip-filter-mode: blacklist                      # fake-ip匹配模式,默认为blacklist,即如果匹配成功不返回fake-ip,可设置为whitelist，即只有匹配成功才返回fake-ip
   fake-ip-filter:                                     # fakeip 过滤,以下地址不会下发 fakeip 映射用于连接
+    - "*"
     - "+.lan"
     - "+.invalid.*"
     - "+.local.*"
+    - "+.arpa"
     - "+.localhost"
     - "geosite:private,cn"
-  default-nameserver:                                 # 只用于解析 nameserver 中域名格式的 DNS 服务器,可使用 UDP/DoT/DoH,只能使用纯 IP 地址
-    - "tls://223.5.5.5:853"                           # 阿里DoT
-    - "https://120.53.53.53:443/dns-query"            # 腾讯DoH
-  nameserver:                                         # 除 nameserver-policy 指定规则外的所有域名都由 nameserver 解析
-    - "tls://dns.google:853"                          # GoogleDNS
-    - "https://cloudflare-dns.com:443/dns-query"      # CloudflareDNS
-    - "https://doh.opendns.com:443/dns-query"         # OpenDNS
-  nameserver-policy:
-    "geosite: cn,private":                            # 国内网址
-      - "tls://dns.alidns.com:853"                    # 阿里DoT
-      - "https://120.53.53.53:443/dns-query"          # 腾讯DoH
+  default-nameserver:                            ###### 只用于解析 nameserver 中域名格式的 DNS 服务器,可使用 UDP/DoT/DoH,只能使用纯 IP 地址
+    - "180.184.1.1"                                   # TrafficRoute DNS IPv4
+    - "119.29.29.29"                                  # DNSPod IPv4
+    - "180.184.2.2"                                   # TrafficRoute DNS IPv4
+    - "223.5.5.5"                                     # Alibaba IPv4
+    - "223.6.6.6"                                     # Alibaba IPv4
+#    - "2400:3200::1"                                  # Alibaba IPv6
+#    - "2400:3200:baba::1"                             # Alibaba IPv6
+  nameserver-policy:                             ###### 使用指定的 DNS 服务器,优先于 nameserver/fallback 查询
+    "geosite:private,cn":                             # 指定国内 DNS 服务器
+    - "180.184.1.1"                                   # TrafficRoute DNS IPv4
+    - "180.184.2.2"                                   # TrafficRoute DNS IPv4
+    - "223.5.5.5"                                     # Alibaba IPv4
+    - "223.6.6.6"                                     # Alibaba IPv4
+#    - "119.29.29.29"                                  # DNSPod IPv4
+#    - "2400:3200::1"                                  # Alibaba IPv6
+#    - "2400:3200:baba::1"                             # Alibaba IPv6
+  direct-nameserver:                             ###### 直连DNS
+    - "180.184.1.1"                                   # 字节DNS1 IPv4
+    - "180.184.2.2"                                   # 字节DNS2 IPv4
+    - "223.5.5.5"                                     # Alibaba IPv4
+    - "223.6.6.6"                                     # Alibaba IPv4
+#    - "119.29.29.29"                                  # DNSPod IPv4
+#    - "114.114.114.114"                               # 114 DNS IPv4
+#    - "2400:3200::1"                                  # Alibaba IPv6
+#    - "2400:3200:baba::1"                             # Alibaba IPv6
+  nameserver:                                    ###### 除 nameserver-policy 指定规则外的所有域名都由 nameserver 解析
+    - "https://8.8.4.4/dns-query"                     # Google DNS IPv4 DoH
+    - "https://1.0.0.1/dns-query"                     # Cloudflare IPv4 DoH
+    - "https://8.8.8.8/dns-query"                     # Google DNS IPv4 DoH
+    - "https://1.1.1.1/dns-query"                     # Cloudflare IPv4 DoH
+#    - "https://[2001:4860:4860::8844]/dns-query"      # Google DNS IPv6 DoH
+#    - "https://[2606:4700:4700::1111]/dns-query"      # Cloudflare IPv6 DoH
+#    - "https://[2001:4860:4860::8888]/dns-query"      # Google DNS IPv6 DoH
+#    - "https://[2606:4700:4700::1001]/dns-query"      # Cloudflare IPv6 DoH
+  proxy-server-nameserver:                       ###### 仅用于解析代理节点的域名,配置服务器若查询失败将使用 nameserver,非并发查询
+    - "https://8.8.4.4/dns-query"                     # Google DNS IPv4 DoH
+    - "https://1.0.0.1/dns-query"                     # Cloudflare IPv4 DoH
+    - "https://8.8.8.8/dns-query"                     # Google DNS IPv4 DoH
+    - "https://1.1.1.1/dns-query"                     # Cloudflare IPv4 DoH
+    - "https://223.5.5.5/dns-query"                   # Alibaba IPv4 DoH
+ #   - "https://[2001:4860:4860::8844]/dns-query"      # Google DNS IPv6 DoH
+ #   - "https://[2606:4700:4700::1111]/dns-query"      # Cloudflare IPv6 DoH
+ #   - "https://[2001:4860:4860::8888]/dns-query"      # Google DNS IPv6 DoH
+ #   - "https://[2606:4700:4700::1001]/dns-query"      # Cloudflare IPv6 DoH
 
 # 机场列表
 p: &p {type: http, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 120, timeout: 2000, lazy: true}, exclude-filter: "(?i)回国|安徽|北京|重庆|福建|甘肃|广东|广西|贵州|海南|河北|黑龙江|河南|湖北|湖南|吉林|江苏|江西|辽宁|内蒙古|宁夏|青海|山东|山西|陕西|上海|四川|天津|西藏|新疆|云南|浙江"}
@@ -160,14 +171,11 @@ proxy-groups:
 
 # 分流规则
 rules:    
-#  - AND,((NETWORK,tcp),(DST-PORT,53)),⭕ DNS劫持
-#  - AND,((NETWORK,udp),(DST-PORT,53)),⭕ DNS劫持
-  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOSITE,cn))),⛔ 拦截          # 除中国外的 QUIC
-  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),⛔ 拦截            # 除中国外的 QUIC
-  - IP-CIDR,127.0.0.1/32,⛔ 拦截,no-resolve                                      # 修复 DNS 泄漏
-  - IP-CIDR6,::1/128,⛔ 拦截,no-resolve
-  - IP-CIDR,198.18.0.1/16,⛔ 拦截,no-resolve
-  - IP-CIDR,28.0.0.1/8,⛔ 拦截,no-resolve
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOSITE,CN))),REJECT-DROP          # 除中国外的 QUIC
+  - AND,(AND,(DST-PORT,443),(NETWORK,UDP)),(NOT,((GEOIP,CN))),REJECT-DROP            # 除中国外的 QUIC
+  - AND,(AND,(DST-PORT,500),(NETWORK,UDP)),DIRECT                                    # 放行WiFi-Calling
+  - AND,(AND,(DST-PORT,4500),(NETWORK,UDP)),DIRECT                                   # 放行WiFi-Calling
+  - AND,(AND,(DST-PORT,123),(NETWORK,UDP)),DIRECT                                    # 放行NTP
   - RULE-SET,封锁列表,⛔ 拦截
   - GEOSITE,private,🟢 直连
   - GEOIP,private,🟢 直连,no-resolve
