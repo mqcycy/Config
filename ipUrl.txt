@@ -6,3 +6,4 @@ craig.ns.cloudflare.com
 decker.ns.cloudflare.com
 damien.ns.cloudflare.com
 dylan.ns.cloudflare.com
+https://raw.githubusercontent.com/amclubs/am-cf-tunnel/main/ipUS.txt@54.200.244.93
