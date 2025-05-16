@@ -1,9 +1,2 @@
-198.62.62.156:443@54.200.244.93#US
-162.159.129.11:2053@54.200.244.93#US
-162.159.129.67:8443@54.200.244.93#US
-cris.ns.cloudflare.com
-craig.ns.cloudflare.com
-decker.ns.cloudflare.com
-damien.ns.cloudflare.com
-dylan.ns.cloudflare.com
-https://raw.githubusercontent.com/amclubs/am-cf-tunnel/main/ipUS.txt@54.200.244.93
+https://raw.githubusercontent.com/amclubs/am-cf-tunnel/main/ipv4.txt@proxyip.amclubs.kozow.com
+https://raw.githubusercontent.com/amclubs/am-cf-tunnel/main/ipv4.csv@proxyip.amclubs.camdvr.org
