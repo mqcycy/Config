@@ -1,10 +1,10 @@
 # OpenWRT 科学上网配置及规则碎片
 
-封锁列表：https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Block.list
+封锁列表：https://gh-proxy.com/https://raw.githubusercontent.com/mqcycy/Config/refs/heads/main/rules-dat/Block.list
 
-直连列表：https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Direct.list
+直连列表：https://gh-proxy.com/https://raw.githubusercontent.com/mqcycy/Config/refs/heads/main/rules-dat/Direct.list
 
-代理列表：https://raw.githubusercontent.com/psqtdhx/Config/refs/heads/main/rules-dat/Proxy.list
+代理列表：https://gh-proxy.com/https://raw.githubusercontent.com/mqcycy/Config/refs/heads/main/rules-dat/Proxy.list
 
 
 
